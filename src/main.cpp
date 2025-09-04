@@ -5,8 +5,8 @@
 #include <Wire.h>
 
 // ================= WiFi =================
-const char* ssid = "Neb Neee";        // Tên WiFi
-const char* password = "0123456789"; // Mật khẩu WiFi
+const char* ssid = "manucian";        // Tên WiFi
+const char* password = "0394143687"; // Mật khẩu WiFi
 
 // ================= MQTT (HiveMQ Cloud) =================
 const char* mqtt_server = "21a2dc99c12241bea146b92c36c25b14.s1.eu.hivemq.cloud";
@@ -81,43 +81,43 @@ void callback(char* topic, byte* payload, unsigned int length) {
 
   if (String(topic) == "esp32/dieuhoa") {
     if (message == "ON") {
-      digitalWrite(DIEUHOA, LOW);
+      digitalWrite(DIEUHOA, HIGH);
       client.publish("esp32/dieuhoaStatus", "ON");
     } else {
-      digitalWrite(DIEUHOA, HIGH);
+      digitalWrite(DIEUHOA, LOW);
       client.publish("esp32/dieuhoaStatus", "OFF");
     }
   }
 
   if (String(topic) == "esp32/quat") {
     if (message == "ON") {
-      digitalWrite(QUAT, LOW);
+      digitalWrite(QUAT, HIGH);
       client.publish("esp32/quatStatus", "ON");
     } else {
-      digitalWrite(QUAT, HIGH);
+      digitalWrite(QUAT, LOW);
       client.publish("esp32/quatStatus", "OFF");
     }
   }
 
   if (String(topic) == "esp32/den") {
     if (message == "ON") {
-      digitalWrite(DEN, LOW);
+      digitalWrite(DEN, HIGH);
       client.publish("esp32/denStatus", "ON");
     } else {
-      digitalWrite(DEN, HIGH);
+      digitalWrite(DEN, LOW);
       client.publish("esp32/denStatus", "OFF");
     }
   }
 
   if (String(topic) == "esp32/turnall") {
     if (message == "ON") {
-      digitalWrite(DEN, LOW);
-      digitalWrite(DIEUHOA, LOW);
-      digitalWrite(QUAT, LOW);
-    } else {
       digitalWrite(DEN, HIGH);
       digitalWrite(DIEUHOA, HIGH);
       digitalWrite(QUAT, HIGH);
+    } else {
+      digitalWrite(DEN, LOW);
+      digitalWrite(DIEUHOA, LOW);
+      digitalWrite(QUAT, LOW);
     }
   }
 }
@@ -152,7 +152,7 @@ void loop() {
   client.loop();
 
   long now = millis();
-  if (now - lastMsg > 2000) {
+  if (now - lastMsg > 5000) {
     lastMsg = now;
 
     float h = dht.readHumidity();
@@ -162,7 +162,7 @@ void loop() {
       return;
     }
 
-    int lightValue = analogRead(32);
+    int lightValue = analogRead(35);
 
     String dataString = "Temperature: " + String(t) + " *C, " +
                         "Humidity: " + String(h) + " %, " +
