@@ -35,7 +35,7 @@ void reconnect() {
     Serial.print("Đang kết nối MQTT... ");
     if (client.connect("ESP32Client", mqtt_user, mqtt_pass)) {
       Serial.println("thành công!");
-      // Subscribe các topic
+      // Subscribe các topic (ESP32 đăng kí nhận tin nhắn) 
       client.subscribe("esp32/dieuhoa");
       client.subscribe("esp32/quat");
       client.subscribe("esp32/den");
@@ -125,7 +125,6 @@ void callback(char* topic, byte* payload, unsigned int length) {
 // ================= SETUP =================
 void setup() {
   Serial.begin(115200);
-  Wire.begin();
   dht.begin();
 
   // GPIO output
@@ -168,7 +167,7 @@ void loop() {
                         "Humidity: " + String(h) + " %, " +
                         "Light: " + String(lightValue);
 
-    client.publish("esp32/datasensor", dataString.c_str());
+    client.publish("esp32/datasensor", dataString.c_str()); // Gửi dữ liệu lên MQTT
     Serial.println("Gửi dữ liệu: " + dataString);
   }
 }
