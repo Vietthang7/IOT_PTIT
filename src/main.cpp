@@ -1,20 +1,21 @@
 #include <WiFi.h>
-#include <WiFiClientSecure.h>
+// #include <WiFiClientSecure.h>
 #include <PubSubClient.h>
 #include <DHT.h>
 #include <Wire.h>
 
 // ================= WiFi =================
-const char* ssid = "manucian";        // Tên WiFi
-const char* password = "0394143687"; // Mật khẩu WiFi
+const char* ssid = "Dungprolh";        // Tên WiFi
+const char* password = "11111111"; // Mật khẩu WiFi
 
 // ================= MQTT (HiveMQ Cloud) =================
-const char* mqtt_server = "21a2dc99c12241bea146b92c36c25b14.s1.eu.hivemq.cloud";
-const int mqtt_port = 8883;             // TLS port
-const char* mqtt_user = "thangnv";     // Username HiveMQ Cloud
-const char* mqtt_pass = "Thang12345";   // Password HiveMQ Cloud
+const char* mqtt_server = "172.20.10.8";
+const int mqtt_port = 1883;             // TLS port
+const char* mqtt_user = "user1";     // Username HiveMQ Cloud
+const char* mqtt_pass = "123456";   // Password HiveMQ Cloud
 
-WiFiClientSecure espClient;
+// WiFiClientSecure espClient;
+WiFiClient espClient; 
 PubSubClient client(espClient);
 
 // ================= DHT + IO =================
@@ -136,7 +137,7 @@ void setup() {
   setup_wifi();
 
   // Bỏ qua chứng chỉ TLS (chỉ để test)
-  espClient.setInsecure();
+  // espClient.setInsecure();
 
   // MQTT
   client.setServer(mqtt_server, mqtt_port);
@@ -151,7 +152,7 @@ void loop() {
   client.loop();
 
   long now = millis();
-  if (now - lastMsg > 5000) {
+  if (now - lastMsg > 3000) {
     lastMsg = now;
 
     float h = dht.readHumidity();
