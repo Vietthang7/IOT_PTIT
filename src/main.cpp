@@ -5,11 +5,11 @@
 #include <Wire.h>
 
 // ================= WiFi =================
-const char* ssid = "Dungprolh";        // Tên WiFi
-const char* password = "11111111"; // Mật khẩu WiFi
+const char* ssid = "manucian";        // Tên WiFi
+const char* password = "0394143687"; // Mật khẩu WiFi
 
 // ================= MQTT (HiveMQ Cloud) =================
-const char* mqtt_server = "172.20.10.8";
+const char* mqtt_server = "192.22.18.104";
 const int mqtt_port = 1883;             // TLS port
 const char* mqtt_user = "user1";     // Username HiveMQ Cloud
 const char* mqtt_pass = "123456";   // Password HiveMQ Cloud
