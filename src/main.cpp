@@ -5,11 +5,11 @@
 #include <Wire.h>
 
 // ================= WiFi =================
-const char* ssid = "Dungprolh";        // Tên WiFi
-const char* password = "11111111"; // Mật khẩu WiFi
+const char* ssid = "Neb Neee";        // Tên WiFi
+const char* password = "012345678"; // Mật khẩu WiFi
 
 // ================= MQTT (HiveMQ Cloud) =================
-const char* mqtt_server = "172.20.10.8";
+const char* mqtt_server = "192.168.180.65";
 const int mqtt_port = 1883;             // TLS port
 const char* mqtt_user = "user1";     // Username HiveMQ Cloud
 const char* mqtt_pass = "123456";   // Password HiveMQ Cloud
@@ -152,17 +152,19 @@ void loop() {
   client.loop();
 
   long now = millis();
-  if (now - lastMsg > 3000) {
+  if (now - lastMsg > 5000) {
     lastMsg = now;
 
-    float h = dht.readHumidity();
+    float h = dht.readHumidity(); 
     float t = dht.readTemperature();
     if (isnan(h) || isnan(t)) {
       Serial.println("Lỗi đọc DHT!");
       return;
     }
 
-    int lightValue = analogRead(35);
+    int lightValueInt = analogRead(35);
+    
+    int lightValue = 650 - map(lightValueInt, 0, 4095, 0, 1000); // Đảo ngược giá trị ánh sáng
 
     String dataString = "Temperature: " + String(t) + " *C, " +
                         "Humidity: " + String(h) + " %, " +
