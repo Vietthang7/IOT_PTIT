@@ -5,11 +5,11 @@
 #include <Wire.h>
 
 // ================= WiFi =================
-const char* ssid = "hien";        // Tên WiFi
-const char* password = "19145746"; // Mật khẩu WiFi
+const char* ssid = "TP-LINK_DA8B";        // Tên WiFi
+const char* password = "12345678"; // Mật khẩu WiFi
 
 // ================= MQTT (HiveMQ Cloud) =================
-const char* mqtt_server = "172.21.145.65";
+const char* mqtt_server = "192.168.1.101";
 const int mqtt_port = 1883;             // TLS port
 const char* mqtt_user = "user1";     // Username HiveMQ Cloud
 const char* mqtt_pass = "123456";   // Password HiveMQ Cloud
@@ -174,7 +174,7 @@ void loop() {
   client.loop();
 
   long now = millis();
-  if (now - lastMsg > 5000) {
+  if (now - lastMsg > 30000) {
     lastMsg = now;
 
     float h = dht.readHumidity(); 
