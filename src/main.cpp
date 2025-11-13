@@ -5,11 +5,11 @@
 #include <Wire.h>
 
 // ================= WiFi =================
-const char* ssid = "manucian";        // Tên WiFi
-const char* password = "0394143687"; // Mật khẩu WiFi
+const char* ssid = "hien";        // Tên WiFi
+const char* password = "19145746"; // Mật khẩu WiFi
 
 // ================= MQTT (HiveMQ Cloud) =================
-const char* mqtt_server = "192.22.18.104";
+const char* mqtt_server = "172.21.145.65";
 const int mqtt_port = 1883;             // TLS port
 const char* mqtt_user = "user1";     // Username HiveMQ Cloud
 const char* mqtt_pass = "123456";   // Password HiveMQ Cloud
@@ -24,7 +24,8 @@ PubSubClient client(espClient);
 #define QUAT 26
 #define DEN 27
 #define DHTTYPE DHT11
-
+#define CHUONG 12
+#define CUA 14
 DHT dht(DHTPIN, DHTTYPE);
 
 // ================= Biến thời gian =================
@@ -40,6 +41,8 @@ void reconnect() {
       client.subscribe("esp32/dieuhoa");
       client.subscribe("esp32/quat");
       client.subscribe("esp32/den");
+      client.subscribe("esp32/chuong");
+      client.subscribe("esp32/cua");
       client.subscribe("esp32/turnall");
     } else {
       Serial.print("Thất bại, rc=");
@@ -50,7 +53,7 @@ void reconnect() {
   }
 }
 
-// ================= Setup WiFi connection =================
+// ================= Setup WiFi connection =================PzzP
 void setup_wifi() {
   delay(10);
   Serial.println();
@@ -87,6 +90,24 @@ void callback(char* topic, byte* payload, unsigned int length) {
     } else {
       digitalWrite(DIEUHOA, LOW);
       client.publish("esp32/dieuhoaStatus", "OFF");
+    }
+  }
+  if (String(topic) == "esp32/chuong") {
+    if (message == "ON") {
+      digitalWrite(CHUONG, HIGH);
+      client.publish("esp32/chuongStatus", "ON");
+    } else {
+      digitalWrite(CHUONG, LOW);
+      client.publish("esp32/chuongStatus", "OFF");
+    }
+  }
+  if (String(topic) == "esp32/cua") {
+    if (message == "ON") {
+      digitalWrite(CUA, HIGH);
+      client.publish("esp32/cuaStatus", "ON");
+    } else {
+      digitalWrite(CUA, LOW);
+      client.publish("esp32/cuaStatus", "OFF");
     }
   }
 
@@ -132,7 +153,8 @@ void setup() {
   pinMode(DIEUHOA, OUTPUT);
   pinMode(QUAT, OUTPUT);
   pinMode(DEN, OUTPUT);
-
+  pinMode(CHUONG, OUTPUT);
+  pinMode(CUA, OUTPUT);
   // WiFi
   setup_wifi();
 
@@ -164,7 +186,7 @@ void loop() {
 
     int lightValueInt = analogRead(35);
     
-    int lightValue = 650 - map(lightValueInt, 0, 4095, 0, 1000); // Đảo ngược giá trị ánh sáng
+    int lightValue = 800 - map(lightValueInt, 0, 4095, 0, 1000); // Đảo ngược giá trị ánh sáng
 
     String dataString = "Temperature: " + String(t) + " *C, " +
                         "Humidity: " + String(h) + " %, " +
